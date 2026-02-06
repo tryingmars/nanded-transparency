@@ -1,0 +1,46 @@
+name: "Daily Tender Scrape"
+
+on:
+  schedule:
+    # Runs at 03:00 UTC every day
+    - cron: '0 3 * * *'
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Scraper
+        # Using the script we defined in package.json
+        run: npm run scrape-nwcmc
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code data/latest_tenders.json || echo "changes_exist=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and Push if changed
+        if: steps.git-check.outputs.changes_exist == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/latest_tenders.json
+          git commit -m "data: daily tender update [skip ci]"
+          git push

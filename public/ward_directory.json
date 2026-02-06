@@ -1,0 +1,115 @@
+[
+  {
+    "ward_no": 1,
+    "areas": [
+      "Cidco Sector A",
+      "New Nanded"
+    ],
+    "nagarsevak_name": "Amit Singh",
+    "party": "BJP",
+    "mobile": "9822012345"
+  },
+  {
+    "ward_no": 2,
+    "areas": [
+      "Cidco Sector B",
+      "Hudco"
+    ],
+    "nagarsevak_name": "Priya Patil",
+    "party": "BJP",
+    "mobile": "9822012346"
+  },
+  {
+    "ward_no": 3,
+    "areas": [
+      "Shivaji Nagar",
+      "Old Mondha"
+    ],
+    "nagarsevak_name": "Rahul Deshmukh",
+    "party": "INC",
+    "mobile": "9822012347"
+  },
+  {
+    "ward_no": 4,
+    "areas": [
+      "Vazirabad",
+      "Main Market"
+    ],
+    "nagarsevak_name": "Sanjay Kulkarni",
+    "party": "BJP",
+    "mobile": "9822012348"
+  },
+  {
+    "ward_no": 5,
+    "areas": [
+      "Itwara",
+      "Station Road"
+    ],
+    "nagarsevak_name": "Mohammed Kaif",
+    "party": "INC",
+    "mobile": "9822012349"
+  },
+  {
+    "ward_no": 6,
+    "areas": [
+      "Vishnupuri",
+      "SRTM University Area"
+    ],
+    "nagarsevak_name": "Snehal Wagh",
+    "party": "BJP",
+    "mobile": "9822012350"
+  },
+  {
+    "ward_no": 7,
+    "areas": [
+      "Taroda Naka",
+      "Malegaon"
+    ],
+    "nagarsevak_name": "Vikram Shinde",
+    "party": "SS (UBT)",
+    "mobile": "9822012351"
+  },
+  {
+    "ward_no": 8,
+    "areas": [
+      "Asarjan",
+      "Industrial Area"
+    ],
+    "nagarsevak_name": "Ramesh Pawar",
+    "party": "BJP",
+    "mobile": "9822012352"
+  },
+  {
+    "ward_no": 9,
+    "areas": [
+      "Gokul Nagar",
+      "Airport Road"
+    ],
+    "nagarsevak_name": "Anita Gaikwad",
+    "party": "NCP",
+    "mobile": "9822012353"
+  },
+  {
+    "ward_no": 10,
+    "areas": [
+      "Pawde Wadi",
+      "Bafna Area"
+    ],
+    "nagarsevak_name": "Rajesh Gupta",
+    "party": "BJP",
+    "mobile": "9822012354"
+  },
+  {
+    "context": {
+      "mp": {
+        "name": "Ravindra Chavan",
+        "party": "INC",
+        "role": "Member of Parliament"
+      },
+      "mayor": {
+        "party_majority": "BJP",
+        "status": "Majority"
+      }
+    }
+  }
+]
