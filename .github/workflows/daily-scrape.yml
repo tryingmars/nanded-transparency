@@ -45,4 +45,4 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add data/latest_tenders.json
           git commit -m "data: daily tender update"
-          git push
+          git push origin main
