@@ -18,8 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Using GH_TOKEN explicitly triggers Vercel and other webhooks. Falls back to default token.
-          token: ${{ secrets.GH_TOKEN || github.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
