@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Using GH_TOKEN explicitly triggers Vercel and other webhooks. Falls back to default token.
+          token: ${{ secrets.GH_TOKEN || github.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,5 +45,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add data/latest_tenders.json
-          git commit -m "data: daily tender update [skip ci]"
+          git commit -m "data: daily tender update"
           git push
