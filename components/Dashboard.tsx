@@ -66,13 +66,18 @@ export function Dashboard({ initialProjects, reportCounts, wardList }: Dashboard
     return (
         <main className="min-h-screen bg-slate-50 font-sans">
             {/* Hero Section */}
-            <div className="bg-indigo-700 pb-24 pt-10 px-4 sm:px-6 lg:px-8">
+            <div className="bg-indigo-700 pb-24 pt-10 px-4 sm:px-6 lg:px-8 shadow-lg">
                 <div className="max-w-7xl mx-auto text-center">
                     <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl tracking-tight">
                         Nanded Civic Transparency
                     </h1>
+                    <p className="text-lg text-indigo-300 mt-1 font-serif">
+                        नांदेड नागरिक पारदर्शकता मंच
+                    </p>
                     <p className="mt-4 max-w-2xl mx-auto text-xl text-indigo-100">
                         Tracking development projects in your ward. Powered by AI.
+                        <br />
+                        <span className="text-base opacity-90">आपल्या प्रभागातील विकासकामांचा मागोवा.</span>
                     </p>
                     <div className="mt-10">
                         <SearchBar onSearch={handleSearch} />
@@ -82,7 +87,7 @@ export function Dashboard({ initialProjects, reportCounts, wardList }: Dashboard
 
             {/* Content Section */}
             <div className="-mt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredProjects.map((project) => {
                         const status = calculateProjectStatus(project.sanction_date, project.duration_months, 50); // Mock 50% completion
                         const ward = wardList.find(w => w.ward_no === project.ward_no);
@@ -90,19 +95,21 @@ export function Dashboard({ initialProjects, reportCounts, wardList }: Dashboard
                         return (
                             <ProjectCard
                                 key={project.id}
+                                id={project.id}
                                 title={project.project_name_english}
                                 marathiTitle={project.project_name_marathi}
                                 cost={project.cost_in_inr}
                                 status={status}
                                 wardInfo={ward}
                                 citizenPhotosCount={reportCounts[project.id] || 0}
+                                publishDate={project.sanction_date}
                             />
                         );
                     })}
                 </div>
 
                 {filteredProjects.length === 0 && (
-                    <div className="text-center py-20 text-slate-500">
+                    <div className="text-center py-20 text-slate-500 dark:text-slate-400">
                         No projects found. Try searching for "Cidco" or "Ward 25".
                     </div>
                 )}
