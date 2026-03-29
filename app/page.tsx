@@ -29,7 +29,7 @@ export default async function Home() {
     id: tender.id,
     project_name_english: tender.title,
     project_name_marathi: '',
-    cost_in_inr: 0,
+    cost_in_inr: tender.cost_in_inr || 0,
     ward_no: null,
     sanction_date: tender.publish_date,
     duration_months: 0

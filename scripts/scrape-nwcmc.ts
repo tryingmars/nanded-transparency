@@ -1,13 +1,14 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface Tender {
     id: string;
     title: string;
     publish_date: string;
     closing_date: string;
+    cost_in_inr: number;
 }
 
 // Departments to scrape
@@ -19,6 +20,22 @@ async function scrapeNWCMC() {
     // Use a Map to prevent duplicates
     const allTendersMap = new Map<string, Tender>();
     let totalRawCount = 0;
+
+    // Load existing data to avoid overwriting
+    try {
+        const outputPath = path.join(process.cwd(), 'data', 'latest_tenders.json');
+        if (fs.existsSync(outputPath)) {
+            const existingData = JSON.parse(fs.readFileSync(outputPath, 'utf-8'));
+            for (const tender of existingData) {
+                if (tender.id) {
+                    allTendersMap.set(tender.id, tender);
+                }
+            }
+            console.log(`[SCRAPER] Loaded ${allTendersMap.size} existing tenders.`);
+        }
+    } catch (e) {
+        console.error(`[SCRAPER] Failed to load existing tenders:`, e);
+    }
 
     for (const dept of DEPARTMENTS) {
         for (let page = 1; page <= MAX_PAGES; page++) {
@@ -55,21 +72,42 @@ async function scrapeNWCMC() {
 
                     const id = $(cols[0]).text().trim();
                     const title = $(cols[1]).text().trim();
-                    const date = $(cols[2]).text().trim();
+                    const dateInfo = $(cols[2]).text().trim();
+                    // Generally, NWCMC site has columns like: Sr.No, Title, Pub Date, Amount, Closing Date
+                    const amountText = cols.length > 3 ? $(cols[3]).text().trim() : '';
+
+                    let cost_in_inr = 0;
+                    // Example parsing: 4.41 Crore -> 44100000
+                    if (amountText.toLowerCase().includes('crore')) {
+                        const val = parseFloat(amountText);
+                        cost_in_inr = !isNaN(val) ? val * 10000000 : 0;
+                    } else if (amountText.toLowerCase().includes('lakh')) {
+                        const val = parseFloat(amountText);
+                        cost_in_inr = !isNaN(val) ? val * 100000 : 0;
+                    } else {
+                        // Extract numbers from something like "Rs. 500000"
+                        const match = amountText.replace(/,/g, '').match(/\d+(\.\d+)?/);
+                        if (match) {
+                            cost_in_inr = parseFloat(match[0]);
+                        }
+                    }
 
                     if (id && title) {
                         totalRawCount++;
 
-                        // Deduplicate based on ID
+                        // Count new items
                         if (!allTendersMap.has(id)) {
-                            allTendersMap.set(id, {
-                                id,
-                                title,
-                                publish_date: date,
-                                closing_date: 'Check Document'
-                            });
                             pageCount++;
                         }
+                        // Always update with fresh website data to ensure we have cost_in_inr
+                        allTendersMap.set(id, {
+                            ...(allTendersMap.get(id) || {}),
+                            id,
+                            title,
+                            publish_date: dateInfo,
+                            closing_date: 'Check Document',
+                            cost_in_inr
+                        });
                     }
                 });
 
